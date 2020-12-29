@@ -20,7 +20,9 @@ class m201228_224924_rbacinit extends Migration
 
         $this->execute("INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
             ('admin', '1', 1609190369),
-            ('register', '2', 1609190369);");
+            ('register', '2', 1609190369),
+            ('register', '3', 1609190369),
+            ('register', '4', 1609190369);");
 
         $this->execute("CREATE TABLE `auth_item` (
               `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,

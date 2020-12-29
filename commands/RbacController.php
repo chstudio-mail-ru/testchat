@@ -33,5 +33,7 @@ class RbacController extends Controller {
 
         $auth->assign($admin, 1);
         $auth->assign($register, 2);
+        $auth->assign($register, 3);
+        $auth->assign($register, 4);
     }
 }
