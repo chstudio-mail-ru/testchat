@@ -33,6 +33,32 @@ class User extends ActiveRecord implements IdentityInterface, Countable
     /**
      * @inheritdoc
      */
+    public function rules()
+    {
+        return [
+            [['username', 'password'], 'required'],
+            [['username'], 'unique', 'targetAttribute' => ['username'], 'message' => 'В БД есть пользователь с таким именем'],
+            [['password'], 'safe'],
+            [['username'], 'string', 'max' => 255],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)){
+            $this->password = md5($this->password);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public static function findIdentity($id)
     {
         return static::findOne(['id' => $id]);
@@ -126,5 +152,13 @@ class User extends ActiveRecord implements IdentityInterface, Countable
     public function count()
     {
         return ($this->deleted !== self::STATUS_DELETED)? 1 : 0;
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'username' => 'Имя',
+            'password' => 'Пароль',
+        ];
     }
 }

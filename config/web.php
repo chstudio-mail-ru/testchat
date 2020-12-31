@@ -51,6 +51,7 @@ $config = [
             'rules' => [
                 '' => 'site/index',
                 'admin' => 'admin/index',
+                'registration' => 'registration/index',
                 '<_a:[\w\-]+>' => 'site/<_a>',
             ],
         ],

@@ -61,7 +61,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index', ['messages' => []]);
+        if (\Yii::$app->user->can('viewAdminPage')) {
+            return $this->render('index_delete', ['messages' => []]);
+        }
+        if (\Yii::$app->user->can('addMessage')) {
+            return $this->render('index_add', ['messages' => []]);
+        }
+        return $this->render('index_view', ['messages' => []]);
     }
 
     /**

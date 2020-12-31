@@ -17,8 +17,9 @@ class m201228_224955_messages extends Migration
               `author_id` int(11) NOT NULL,
               `date_add` int(11) NOT NULL,
               `message` varchar(1024) NOT NULL,
-              `deleted` enum('0','1') NOT NULL DEFAULT '0'
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+              `deleted` enum('0','1') NOT NULL DEFAULT '0',
+              `remote_addr` varchar(15) DEFAULT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;");
 
         $this->execute("ALTER TABLE `messages`
               ADD PRIMARY KEY (`id`),
@@ -35,6 +36,9 @@ class m201228_224955_messages extends Migration
      */
     public function safeDown()
     {
+        $this->dropPrimaryKey("id", "messages");
+        $this->dropIndex("author_id","messages");
+        $this->dropIndex("date_add","messages");
         $this->dropTable("messages");
     }
 
