@@ -1,3 +1,5 @@
-1. yii migrate --migrationPath=@yii/rbac/migrations
-2. yii rbac/init
-3. yii migrate
+1. git clone https://github.com/chstudio-mail-ru/testchat.git
+2. composer update
+3. yii migrate --migrationPath=@yii/rbac/migrations
+4. yii rbac/init
+5. yii migrate

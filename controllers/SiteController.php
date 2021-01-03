@@ -2,20 +2,20 @@
 
 namespace app\controllers;
 
+use app\models\Message;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller
 {
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'access' => [
@@ -41,7 +41,7 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function actions()
+    public function actions(): array
     {
         return [
             'error' => [
@@ -59,15 +59,31 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
+        $model = new Message();
+
         if (\Yii::$app->user->can('viewAdminPage')) {
-            return $this->render('index_delete', ['messages' => []]);
+            if ($model->load(Yii::$app->request->post())) {
+                $model->author_id = Yii::$app->user->id;
+                if ($model->save()) {
+                    return $this->render('index_add', ['messages' => $model->getAll(true)]);
+                }
+            }
+
+            return $this->render('index_delete', ['messages' => $model->getAll(true)]);
         }
         if (\Yii::$app->user->can('addMessage')) {
-            return $this->render('index_add', ['messages' => []]);
+            if ($model->load(Yii::$app->request->post())) {
+                $model->author_id = Yii::$app->user->id;
+                if ($model->save()) {
+                    return $this->render('index_add', ['messages' => $model->getAll()]);
+                }
+            }
+
+            return $this->render('index_add', ['messages' => $model->getAll()]);
         }
-        return $this->render('index_view', ['messages' => []]);
+        return $this->render('index_view', ['messages' => $model->getAll()]);
     }
 
     /**
@@ -97,7 +113,7 @@ class SiteController extends Controller
      *
      * @return Response
      */
-    public function actionLogout()
+    public function actionLogout(): Response
     {
         Yii::$app->user->logout();
 

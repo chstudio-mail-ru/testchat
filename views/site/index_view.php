@@ -10,7 +10,7 @@ $this->title = 'Test chat';
         Можно смотреть
         <?php
             foreach ($messages as $message) {
-                echo $message->author." ".date("Y.m.d H:i:s", $message->date_add).": ".$message->text;
+                echo $message->author.": ".$message->text;
             }
         ?>
     </div>
