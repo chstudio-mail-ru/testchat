@@ -67,23 +67,23 @@ class SiteController extends Controller
             if ($model->load(Yii::$app->request->post())) {
                 $model->author_id = Yii::$app->user->id;
                 if ($model->save()) {
-                    return $this->render('index_add', ['messages' => $model->getAll(true)]);
+                    return $this->render('index_add', ['model' => $model, 'messages' => $model->getAll(true)]);
                 }
             }
 
-            return $this->render('index_delete', ['messages' => $model->getAll(true)]);
-        }
-        if (\Yii::$app->user->can('addMessage')) {
+            return $this->render('index_delete', ['model' => $model, 'messages' => $model->getAll(true)]);
+        } elseif (\Yii::$app->user->can('addMessage')) {
             if ($model->load(Yii::$app->request->post())) {
                 $model->author_id = Yii::$app->user->id;
                 if ($model->save()) {
-                    return $this->render('index_add', ['messages' => $model->getAll()]);
+                    return $this->render('index_add', ['model' => $model, 'messages' => $model->getAll()]);
                 }
             }
 
-            return $this->render('index_add', ['messages' => $model->getAll()]);
+            return $this->render('index_add', ['model' => $model, 'messages' => $model->getAll()]);
         }
-        return $this->render('index_view', ['messages' => $model->getAll()]);
+
+        return $this->render('index_view', ['model' => $model, 'messages' => $model->getAll()]);
     }
 
     /**

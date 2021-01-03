@@ -47,7 +47,7 @@ class Message extends ActiveRecord
         return [
             'author_id' => 'Author ID',
             'date_add' => 'Date Add',
-            'message' => 'Message',
+            'message' => 'Сообщение',
             'deleted' => 'Deleted',
             'remote_addr' => 'Remote Addr',
         ];
