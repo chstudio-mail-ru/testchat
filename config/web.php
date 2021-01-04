@@ -52,6 +52,7 @@ $config = [
             'rules' => [
                 'delete/<id:\d+>' => 'site/delete',
                 'publish/<id:\d+>' => 'site/publish',
+                'login' => 'site/login',
                 '' => 'site/index',
                 'admin/users' => 'admin/users',
                 'admin/access/<id:\d+>/<access:\d+>' => 'admin/access',
