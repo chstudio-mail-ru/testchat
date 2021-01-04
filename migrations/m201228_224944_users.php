@@ -16,7 +16,6 @@ class m201228_224944_users extends Migration
             `id` int(11) NOT NULL,
             `username` varchar(255) NOT NULL,
             `password` varchar(32) NOT NULL,
-            `deleted` enum('0','1') NOT NULL DEFAULT '0',
             `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;");
 
@@ -27,11 +26,11 @@ class m201228_224944_users extends Migration
                 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
             COMMIT;");
 
-        $this->execute("INSERT INTO `users` (`id`, `username`, `password`, `deleted`, `created_at`) VALUES
-                (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', '0', '2020-12-28 21:00:00'),
-                (2, 'user', 'ee11cbb19052e40b07aac0ca060c23ee', '0', '2020-12-28 21:00:00'),
-                (3, 'user1', 'ee11cbb19052e40b07aac0ca060c23ee', '0', '2020-12-28 21:00:00'),
-                (4, 'user2', 'ee11cbb19052e40b07aac0ca060c23ee', '0', '2020-12-28 21:00:00');");
+        $this->execute("INSERT INTO `users` (`id`, `username`, `password`, `created_at`) VALUES
+                (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', '2020-12-28 21:00:00'),
+                (2, 'user', 'ee11cbb19052e40b07aac0ca060c23ee', '2020-12-28 21:00:00'),
+                (3, 'user1', 'ee11cbb19052e40b07aac0ca060c23ee', '2020-12-28 21:00:00'),
+                (4, 'user2', 'ee11cbb19052e40b07aac0ca060c23ee', '2020-12-28 21:00:00');");
     }
 
     /**

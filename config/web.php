@@ -8,6 +8,7 @@ $config = [
     'name' => 'Test chat',
     'language' => 'ru-RU',
     'sourceLanguage' => 'en-US',
+    'timeZone' => 'Europe/Moscow',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -49,10 +50,13 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'delete/<id:\d+>' => 'site/delete',
+                'publish/<id:\d+>' => 'site/publish',
                 '' => 'site/index',
+                'admin/users' => 'admin/users',
+                'admin/access/<id:\d+>/<access:\d+>' => 'admin/access',
                 'admin' => 'admin/index',
                 'registration' => 'registration/index',
-                '<_a:[\w\-]+>' => 'site/<_a>',
             ],
         ],
         'authManager' => [

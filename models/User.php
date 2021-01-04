@@ -13,15 +13,12 @@ use yii\web\IdentityInterface;
  * @property integer $id
  * @property string $username;
  * @property string $password;
- * @property integer $deleted
  * @property string $authKey;
  * @property string $accessToken;
  *
  */
 class User extends ActiveRecord implements IdentityInterface, Countable
 {
-    const STATUS_DELETED = 1;
-
     /**
      * {@inheritdoc}
      */
@@ -151,14 +148,54 @@ class User extends ActiveRecord implements IdentityInterface, Countable
      */
     public function count()
     {
-        return ($this->deleted !== self::STATUS_DELETED)? 1 : 0;
+        return 1;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function attributeLabels()
     {
         return [
             'username' => 'Имя',
             'password' => 'Пароль',
         ];
+    }
+
+    public function getUserRoles(): array
+    {
+        $roles = [];
+        $assignments = Yii::$app->authManager->getAssignments($this->id);
+        foreach($assignments as $userAssign){
+            $roles[] = $userAssign->roleName;
+        }
+
+        return $roles;
+    }
+
+    /**
+     * Set users access.
+     * @param int $id
+     * @param int $access   //1 - admin, 2 - register, 0 - no access
+     * @throws \Exception
+     */
+    public static function setAccess(int $id, int $access)
+    {
+        $auth = Yii::$app->authManager;
+        $admin = $auth->getRole('admin');
+        $register = $auth->getRole('register');
+
+        switch ($access) {
+            case 1:
+                $auth->revokeAll($id);
+                $auth->assign($admin, $id);
+                break;
+            case 2:
+                $auth->revokeAll($id);
+                $auth->assign($register, $id);
+                break;
+            case 0:
+                $auth->revokeAll($id);
+        }
     }
 }

@@ -69,6 +69,38 @@ class Message extends ActiveRecord
     {
         return self::find()
             ->select( ['*'] )
-            ->where(['deleted' => !$withDeleted ? '1' : ['0','1']])->all();
+            ->where(['deleted' => !$withDeleted ? '0' : ['0','1']])->all();
+    }
+
+    /**
+     * @return array|ActiveRecord[]
+     */
+    public static function getAllDeleted(): array
+    {
+        return self::find()
+            ->select( ['*'] )
+            ->where(['deleted' => '1'])->all();
+    }
+
+    /**
+     * @param int $id
+     */
+    public static function deleteMessage(int $id)
+    {
+        $message = static::findOne(['id' => $id]);
+
+        $message->deleted = 1;
+        $message->save(false);
+    }
+
+    /**
+     * @param int $id
+     */
+    public static function publishMessage(int $id)
+    {
+        $message = static::findOne(['id' => $id]);
+
+        $message->deleted = 0;
+        $message->save(false);
     }
 }

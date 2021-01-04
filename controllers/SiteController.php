@@ -63,19 +63,25 @@ class SiteController extends Controller
     {
         $model = new Message();
 
-        if (\Yii::$app->user->can('viewAdminPage')) {
+        if (Yii::$app->user->can('viewAdminPage')) {
             if ($model->load(Yii::$app->request->post())) {
                 $model->author_id = Yii::$app->user->id;
+                $model->date_add = time();
+                $model->remote_addr = $_SERVER['REMOTE_ADDR'];
                 if ($model->save()) {
-                    return $this->render('index_add', ['model' => $model, 'messages' => $model->getAll(true)]);
+                    $model->message = '';
+                    return $this->render('index_delete', ['model' => $model, 'messages' => $model->getAll(true)]);
                 }
             }
 
             return $this->render('index_delete', ['model' => $model, 'messages' => $model->getAll(true)]);
-        } elseif (\Yii::$app->user->can('addMessage')) {
+        } elseif (Yii::$app->user->can('addMessage')) {
             if ($model->load(Yii::$app->request->post())) {
                 $model->author_id = Yii::$app->user->id;
+                $model->date_add = time();
+                $model->remote_addr = $_SERVER['REMOTE_ADDR'];
                 if ($model->save()) {
+                    $model->message = '';
                     return $this->render('index_add', ['model' => $model, 'messages' => $model->getAll()]);
                 }
             }
@@ -84,6 +90,28 @@ class SiteController extends Controller
         }
 
         return $this->render('index_view', ['model' => $model, 'messages' => $model->getAll()]);
+    }
+
+    /**
+     * Hide message action.
+     * @param int $id
+     */
+    public function actionDelete(int $id)
+    {
+        if(Yii::$app->user->can('viewAdminPage') && Yii::$app->request->isPost && Yii::$app->request->isAjax) {
+            Message::deleteMessage($id);
+        }
+    }
+
+    /**
+     * Show message action.
+     * @param int $id
+     */
+    public function actionPublish(int $id)
+    {
+        if(Yii::$app->user->can('viewAdminPage') && Yii::$app->request->isPost && Yii::$app->request->isAjax) {
+            Message::publishMessage($id);
+        }
     }
 
     /**
