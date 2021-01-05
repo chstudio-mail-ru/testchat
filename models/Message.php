@@ -69,7 +69,9 @@ class Message extends ActiveRecord
     {
         return self::find()
             ->select( ['*'] )
-            ->where(['deleted' => !$withDeleted ? '0' : ['0','1']])->all();
+            ->where(['deleted' => !$withDeleted ? '0' : ['0','1']])
+            ->orderBy(['date_add' => SORT_ASC])
+            ->all();
     }
 
     /**
@@ -79,7 +81,9 @@ class Message extends ActiveRecord
     {
         return self::find()
             ->select( ['*'] )
-            ->where(['deleted' => '1'])->all();
+            ->where(['deleted' => '1'])
+            ->orderBy(['date_add' => SORT_ASC])
+            ->all();
     }
 
     /**
