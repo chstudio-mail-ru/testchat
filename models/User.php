@@ -196,6 +196,7 @@ class User extends ActiveRecord implements IdentityInterface, Countable
                 break;
             case 0:
                 $auth->revokeAll($id);
+                break;
         }
     }
 }
