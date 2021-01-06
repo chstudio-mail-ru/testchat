@@ -67,7 +67,12 @@ $this->registerJs($js, yii\web\View::POS_HEAD);
         <?php
         foreach ($users as $user) {
             $roles = $user->userRoles;
-            echo "<br />".(($user->username == "admin")? "<span style=\"color:red; font-weight: bold\">" : "<span style=\"color:black; font-weight: normal\">").$user->username."</span> - ".((isset($roles[0]))? $roles[0] : "Нет прав");
+            $rolesString = '';
+            foreach ($roles as $roleName) {
+                $rolesString = $roleName.", ";
+            }
+            $rolesString = preg_replace("/,\s$/", "", $rolesString);
+            echo "<br />".(($user->username == "admin")? "<span style=\"color:red; font-weight: bold\">" : "<span style=\"color:black; font-weight: normal\">").$user->username."</span> - ".((strlen($rolesString) > 0)? $rolesString : "Нет прав");
             if (!in_array('admin', $roles)) {
                 echo " <a href=\"#\" onclick=\"setUserAdmin(".$user->id.");return false;\">Назначить администратором</a>";
             }
